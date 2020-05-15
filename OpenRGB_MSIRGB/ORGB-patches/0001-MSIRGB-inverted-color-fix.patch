@@ -1,0 +1,88 @@
+From 8c1c31363c719ae5c5718072215645fe36516163 Mon Sep 17 00:00:00 2001
+From: Hex3l <me@hex3l.net>
+Date: Fri, 15 May 2020 22:40:15 +0200
+Subject: [PATCH] MSIRGB inverted color fix
+
+---
+ Controllers/MSIRGBController/MSIRGBController.cpp      | 10 +++++++++-
+ Controllers/MSIRGBController/MSIRGBController.h        |  3 ++-
+ .../MSIRGBController/MSIRGBControllerDetect.cpp        |  6 +++++-
+ 3 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/Controllers/MSIRGBController/MSIRGBController.cpp b/Controllers/MSIRGBController/MSIRGBController.cpp
+index 1a0c247..8c24f85 100644
+--- a/Controllers/MSIRGBController/MSIRGBController.cpp
++++ b/Controllers/MSIRGBController/MSIRGBController.cpp
+@@ -12,7 +12,7 @@
+ #include "MSIRGBController.h"
+ #include "super_io.h"
+ 
+-MSIRGBController::MSIRGBController(int sioaddr)
++MSIRGBController::MSIRGBController(int sioaddr, int inv)
+ {
+     msi_sioaddr = sioaddr;
+ 
+@@ -54,6 +54,8 @@ MSIRGBController::MSIRGBController(int sioaddr)
+     | Lighting enabled, RGB non-inverted, header on         |
+     \*-----------------------------------------------------*/
+     superio_outb(msi_sioaddr, MSI_SIO_RGB_REG_CFG_3, 0xE2);
++
++    invert = inv;
+ }
+ 
+ MSIRGBController::~MSIRGBController()
+@@ -72,6 +74,12 @@ void MSIRGBController::SetColor(unsigned char red, unsigned char green, unsigned
+     green   = green >> 4;
+     blue    = blue >> 4;
+ 
++    if (invert) {
++        red = 0x0F - red;
++        green = 0x0F - green;
++        blue = 0x0F - blue;
++    }
++
+     /*-----------------------------------------------------*\
+     | Set logical device register to RGB controller         |
+     \*-----------------------------------------------------*/
+diff --git a/Controllers/MSIRGBController/MSIRGBController.h b/Controllers/MSIRGBController/MSIRGBController.h
+index 8ea7179..907526a 100644
+--- a/Controllers/MSIRGBController/MSIRGBController.h
++++ b/Controllers/MSIRGBController/MSIRGBController.h
+@@ -41,7 +41,7 @@ enum
+ class MSIRGBController
+ {
+ public:
+-    MSIRGBController(int sioaddr);
++    MSIRGBController(int sioaddr, int invert);
+     ~MSIRGBController();
+ 
+     std::string     GetDeviceName();
+@@ -53,4 +53,5 @@ public:
+     void            SetColor(unsigned char red, unsigned char green, unsigned char blue);
+ private:
+     int     msi_sioaddr;
++    int     invert;
+ };
+\ No newline at end of file
+diff --git a/Controllers/MSIRGBController/MSIRGBControllerDetect.cpp b/Controllers/MSIRGBController/MSIRGBControllerDetect.cpp
+index 8c15e02..5d41f84 100644
+--- a/Controllers/MSIRGBController/MSIRGBControllerDetect.cpp
++++ b/Controllers/MSIRGBController/MSIRGBControllerDetect.cpp
+@@ -30,9 +30,13 @@ void DetectMSIRGBControllers(std::vector<RGBController*> &rgb_controllers)
+         {
+         case SIO_NCT6795_ID:
+         case SIO_NCT6797_ID:
+-            MSIRGBController* new_msi = new MSIRGBController(sioaddr);
++            MSIRGBController* new_msi = new MSIRGBController(sioaddr, 0);
+             RGBController_MSIRGB* new_rgb = new RGBController_MSIRGB(new_msi);
+ 
++            rgb_controllers.push_back(new_rgb);
++            new_msi = new MSIRGBController(sioaddr, 1);
++            new_rgb = new RGBController_MSIRGB(new_msi);
++
+             rgb_controllers.push_back(new_rgb);
+             break;
+         }
+-- 
+2.25.1.windows.1
+

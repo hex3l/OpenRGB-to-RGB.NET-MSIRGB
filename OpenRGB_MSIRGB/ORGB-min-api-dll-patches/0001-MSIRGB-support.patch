@@ -1,0 +1,37 @@
+From ffb994c3148c5fc6ab7d3a14c26d6aa08b2ceb73 Mon Sep 17 00:00:00 2001
+From: Hex3l <me@hex3l.net>
+Date: Fri, 15 May 2020 22:34:48 +0200
+Subject: [PATCH] MSIRGB support
+
+---
+ openrgb_api.cpp | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/openrgb_api.cpp b/openrgb_api.cpp
+index 1523e10..8807aef 100644
+--- a/openrgb_api.cpp
++++ b/openrgb_api.cpp
+@@ -6,18 +6,17 @@
+ #include <comutil.h>
+ 
+ #include "RGBController.h"
++#include "../MSIRGBControllerDetect.h"
+ 
+ // List of detected controllers
+ std::vector<RGBController*> rgb_controllers;
+ 
+-
+-
+ // Initialize the lib and detects controllers
+ void init() {
+     //
+ 	//Detect and init devices here
+ 	//
+-	
++    DetectMSIRGBControllers(rgb_controllers);
+ }
+ 
+ /**
+-- 
+2.25.1.windows.1
+
