@@ -1,0 +1,6 @@
+[submodule "OpenRGB_MSIRGB/OpenRGB-min-api-dll-base"]
+	path = OpenRGB_MSIRGB/OpenRGB-min-api-dll-base
+	url = https://github.com/Hex3l/OpenRGB-min-api-dll-base.git
+[submodule "OpenRGB_MSIRGB/OpenRGB"]
+	path = OpenRGB_MSIRGB/OpenRGB
+	url = https://gitlab.com/CalcProgrammer1/OpenRGB.git
