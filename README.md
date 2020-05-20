@@ -16,6 +16,11 @@ RGB.NET DeviceProvider, it will take care of loading OpenRGB_MSIRGB.dll and comm
 Minimal implementation of OpenRGB features required by this layer. It includes directly (or using git patches) the code/implementations made by _OpenRGB_
 
 
+## Color inversion fixes
+
+In order to fix color inversion _OpenRGB_MSIRGB.dll_ returns 2 devices for the same motherboard controller.
+One has a normal behaviour while the other, flagged as `INVERTED` applies the colors space inversion.
+
 ## How to build and use
 
 1. Clone the repo with its submodules.
