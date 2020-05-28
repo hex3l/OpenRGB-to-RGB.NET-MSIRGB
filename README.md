@@ -35,4 +35,4 @@ One has a normal behaviour while the other, flagged as `INVERTED` applies the co
 6. You will also need inpout32.dll/inpoutx64.dll in your root app directory, you can get it from 
    - x86:`OpenRGB_MSIRGB/OpenRGB/dependencies/inpout32_1501/Win32/inpout32.dll`
    - x64:`OpenRGB_MSIRGB/OpenRGB/dependencies/inpout32_1501/x64/inpoutx64.dll`
-7. inpoutx64 requires the installation of a kernel driver. To install it the final user must run `DriverInstall.exe` located in `InpOutBinaries_1501\Win32` inside the binaries distribution http://www.highrez.co.uk/scripts/download.asp?package=InpOutBinaries
+7. inpoutx64 requires the installation of a kernel driver. To install it the final user must run as admin your application that should contain, in its root path, the driver installer program `DriverInstall.exe`. You can get it with the binaries distribution http://www.highrez.co.uk/scripts/download.asp?package=InpOutBinaries and it is located in `InpOutBinaries_1501\Win32`.
